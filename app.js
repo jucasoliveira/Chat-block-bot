@@ -131,27 +131,21 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/users/dashboard', dashboard);
 
-// displays our homepage
-/*
-app.use('/', function(req, res){
-    res.render('home', {user: req.user});
-});
-*/
 // displays our signup page
 app.use('/singing', function(req, res){
-    console.log("here");
     res.render('singing');
 });
+
 // sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.use('/local-reg', passport.authenticate('local-signup', {
-        successRedirect: '/',
-        failureRedirect: '/signin'
+        successRedirect: '/users/dashboard',
+        failureRedirect: '/singing'
     })
 );
 
 // sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
 app.use('/login', passport.authenticate('local-signin', {
-        successRedirect: '/',
+        successRedirect: '/users/dashboard',
         failureRedirect: '/singing'
     })
 );

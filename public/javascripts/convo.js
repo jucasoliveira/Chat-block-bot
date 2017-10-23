@@ -3,7 +3,7 @@ let botui = new BotUI('api-bot');
 let socket = io.connect('http://localhost:8010');
 // read the BotUI docs : https://docs.botui.org/
 botui.message.add({
-    content: 'Hey, do you need help?',
+    content: 'What do you need?',
     delay: 1500,
 }).then(function () {
     botui.action.text({
@@ -13,7 +13,7 @@ botui.message.add({
     ).then(function (res) {
             socket.emit('fromClient', { client : res.value }); // sends the message typed to server
 
-        console.log(res.value); // will print whatever was typed in the field.
+        //console.log(res.value); // will print whatever was typed in the field.
 
     }).then(function () {
         socket.on('fromServer', function (data) { // recieveing a reply from server.
