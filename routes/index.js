@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'botUI_api.ai' });
+    res.render('home', {user: req.user});
 });
 
 module.exports = router;
