@@ -51,7 +51,8 @@ let callUIbutton = (data) => {
                 text: 'Upload your file',
                 value: 'exist'
             }]
-        }).then(function () {
+        }).then(function (res) {
+            console.log(res.value);
             document.querySelector('input#upload').click();
             let inputElement = document.getElementById("upload");
             inputElement.addEventListener("change", handleFiles, false);
