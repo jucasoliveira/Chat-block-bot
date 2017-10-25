@@ -1,7 +1,7 @@
 let app = require('express')();
 let server = require('http').Server(app);
 let io = require('socket.io')(server);
-
+let swarm = require('./etherumSwarmNode');
 let api = require('./api');
 
 let conn = function() {
@@ -20,6 +20,12 @@ let fromClient = function() {
                 socket.emit('fromServer', { server: res.message, treat: res.action });
             });
         });
+        socket.on('toSwarm', function (res) {
+            console.log(res);
+            swarm.swarmPut(res,(d)=>{
+                socket.emit('toSendHash', d);
+            });
+        })
     });
 };
 

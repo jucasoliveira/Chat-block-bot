@@ -16,6 +16,7 @@
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
     "hbs": "~4.0.1",
+    "http": "0.0.0",
     "method-override": "^2.3.10",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",
@@ -27,6 +28,9 @@
     "passport-twitter": "^1.0.2",
     "q": "^1.0.1",
     "serve-favicon": "~2.4.2",
-    "socket.io": "^2.0.3"
+    "socket.io": "^2.0.3",
+    "url": "^0.11.0",
+    "web3": "^1.0.0-beta.24",
+    "web3-bzz": "^1.0.0-beta.22"
   }
 }

@@ -2,28 +2,33 @@ let botui = new BotUI('api-bot');
 
 let socket = io.connect('http://localhost:8010');
 // read the BotUI docs : https://docs.botui.org/
-botui.message.add({
-    content: 'What do you need?',
-    delay: 1500,
-}).then(function () {
-    botui.action.text({
-            action: {
-                placeholder: 'Retrieve or Upload', }
-        }
-    ).then(function (res) {
+let init = () => {
+    botui.message.add({
+        content: 'What do you need?',
+        delay: 1500,
+    }).then(function () {
+        botui.action.text({
+                action: {
+                    placeholder: 'Retrieve or Upload', }
+            }
+        ).then(function (res) {
             socket.emit('fromClient', { client : res.value }); // sends the message typed to server
 
-        //console.log(res.value); // will print whatever was typed in the field.
+        }).then(function () {
+            socket.on('fromServer', function (data) { // recieveing a reply from server.
+                if(data.treat === 'input.upload'){
+                    callUIbutton(data);
+                } else if(data.treat === 'input.welcome'){
+                    botui.message.add({
+                        content: data.server,
+                        delay: 500,
+                    });
+                }
 
-    }).then(function () {
-        socket.on('fromServer', function (data) { // recieveing a reply from server.
+
+            });
+        }).then(()=>{
             if(data.treat === 'input.upload'){
-                /*
-                botui.message.add({
-                    content: data.server,
-                    delay: 500,
-                });
-                */
                 callUIbutton(data);
             } else if(data.treat === 'input.welcome'){
                 botui.message.add({
@@ -31,14 +36,12 @@ botui.message.add({
                     delay: 500,
                 });
             }
+        })
 
+    });
+};
 
-        });
-
-    })
-});
-
-let fileName;
+let definedFile;
 let callUIbutton = (data) => {
     botui.message.add({
         content: data.server,
@@ -52,18 +55,16 @@ let callUIbutton = (data) => {
                 value: 'exist'
             }]
         }).then(function (res) {
-            console.log(res.value);
             document.querySelector('input#upload').click();
             let inputElement = document.getElementById("upload");
             inputElement.addEventListener("change", handleFiles, false);
             function handleFiles() {
                 let fileList = this.files; /* now you can work with the file list */
-                console.log(fileList);
-                fileName = fileList[0].name;
+                definedFile = fileList[0];
                 botui.message
                     .bot({
                         delay: 500,
-                        content: 'New file: ' + fileName
+                        content: 'New file: ' + definedFile.name
                     });
 
                 return botui.action.button({
@@ -79,7 +80,22 @@ let callUIbutton = (data) => {
                     }]
                 }).then(function (res) {
                     if(res.value === 'confirm') {
-                        end();
+                        console.log(definedFile);
+                        botui.message
+                            .bot({
+                                delay: 1000,
+                                content: 'Thank you. Stay with me Ill provide your key'
+                            }).then(function () {
+                            botui.message.add({
+                                loading: true
+                            }).then(function (index) {
+                                // do some stuff like ajax, etc.
+                                socket.emit('toSwarm', definedFile);
+                                socket.on('toSendHash', function (d) {
+                                    end(index, d);
+                                })
+                            });
+                        })
                     } else {
                         callUIbutton(data);
                     }
@@ -91,10 +107,16 @@ let callUIbutton = (data) => {
 
 
 
-let end = function () {
-    botui.message
-        .bot({
-            delay: 1000,
-            content: 'Thank you. Stay with me Ill provide your key'
-        });
+let end = (index,hash) => {
+
+    if(hash){
+            botui.message
+                .update(index, {
+                    loading: false,
+                    delay: 1000,
+                    content: hash
+                }).then(init)
+    }
 };
+
+init();
