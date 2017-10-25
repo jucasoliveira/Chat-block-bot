@@ -53,7 +53,7 @@ The application consists with the follow functionalities :
 
 Clone the repository to a directory of your choosing:
 
-git clone https://github.com/ethereum/go-ethereum
+```git clone https://github.com/ethereum/go-ethereum```
 
 Building geth requires some external libraries to be installed:
 
@@ -104,7 +104,7 @@ Next, start your geth node and establish connection with Ethereum main network w
 
  ```build/bin/geth```
  
- #### 1.3.2 Swarm
+#### 1.3.2 Swarm
  
  After the connection is established, open another terminal window and connect to Swarm with
  
