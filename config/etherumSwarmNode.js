@@ -5,6 +5,18 @@
 // Needs web3.js from https://github.com/axic/web3.js/tree/swarm
 //
 
+/**
+ * this is to get the up gateway
+ * @type {Bzz}
+ */
+/*
+var Bzz = require('web3-bzz');
+var bzz = new Bzz('http://localhost:8500');
+
+// change provider
+bzz.setProvider('http://swarm-gateways.net');
+ console.log(bzz);
+ */
 let Web3 = require('web3');
 
 let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8500'));
@@ -15,15 +27,13 @@ try {
 
 web3.bzz.setProvider("http://localhost:8500");
 
-let dir = {
-    "./foo.txt": {type: "text/plain"}
-};
-
 let swarmPut = function (buf, cb) {
+
     web3.bzz.upload(buf).then(function (hash) {
         console.log("Uploaded file : ", hash);
         cb(hash);
     });
+
 };
 
 let swarmGet = function (key, cb) {
@@ -33,17 +43,13 @@ let swarmGet = function (key, cb) {
     });
 };
 
-/*
-swarmPut(dir, function (res) {
+let swarmPick = function(cb){
+    console.log('merda');
+};
 
-    console.log('Added to swarm: ', res);
 
-    swarmGet(res, function (res1) {
-        console.log('Retrieved from swarm: ', res1);
-    })
-});
-*/
 module.exports = {
     swarmPut,
-    swarmGet
+    swarmGet,
+    swarmPick
 };
