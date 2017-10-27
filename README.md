@@ -46,6 +46,9 @@ The application consists with the follow functionalities :
  servless p2p storage that the files will be kept and return when the unique key will be provided.
 
  Docker to deploy the application to the server containerized
+ 
+ ![PROJECT OVERVIEW](https://github.com/jucasoliveira/Chat-block-bot/tree/develop/public/images/projectOverview.png)
+   
 
 ## 1 Set up blockchain
 
