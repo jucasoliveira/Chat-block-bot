@@ -135,7 +135,6 @@ Next, start your geth node and establish connection with Ethereum main network w
  
  ## 3. Mongo DB
  
- df9dd6add0d17f82a4be3bfa9df70056be0ca5ba7759d17fdfc070c037f240d5
 
 If you have installed mongodb through homebrew then you can simply start mongodb through
 
