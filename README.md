@@ -46,6 +46,8 @@ The application consists with the follow functionalities :
  servless p2p storage that the files will be kept and return when the unique key will be provided.
 
  Docker to deploy the application to the server containerized
+   
+ ![project overview](/public/images/projectOverviewPic.png)
 
 ## 1 Set up blockchain
 

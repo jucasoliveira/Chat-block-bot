@@ -18,6 +18,7 @@
     "express-sessions": "^1.0.6",
     "hbs": "~4.0.1",
     "http": "0.0.0",
+    "ipfs-js": "0.0.11",
     "method-override": "^2.3.10",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",

@@ -23,19 +23,23 @@ let init = () => {
                         content: data.server,
                         delay: 500,
                     });
+                } else if(data.treat === 'input.retrieve'){
+                    botui.message.add({
+                        content: data.server,
+                        delay: 500,
+                    }).then(function () {
+                        botui.action.text({
+                                action: {
+                                    placeholder: 'Insert your key', }
+                            }
+                        ).then(function (res) {
+                            socket.emit('retrieveImage', res.value);
+                        });
+                    });
                 }
 
 
             });
-        }).then(()=>{
-            if(data.treat === 'input.upload'){
-                callUIbutton(data);
-            } else if(data.treat === 'input.welcome'){
-                botui.message.add({
-                    content: data.server,
-                    delay: 500,
-                });
-            }
         })
 
     });

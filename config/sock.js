@@ -3,6 +3,7 @@ let server = require('http').Server(app);
 let io = require('socket.io')(server);
 let swarm = require('./etherumSwarmNode');
 let api = require('./api');
+let ipfs = require('./handlefiles');
 
 let conn = function() {
     server.listen(8010);
@@ -22,8 +23,14 @@ let fromClient = function() {
         });
         socket.on('toSwarm', function (res) {
             console.log(res);
-            swarm.swarmPut(res,(d)=>{
-                socket.emit('toSendHash', d);
+            ipfs.ipfsAdd(res,(d)=>{
+                socket.emit('toSendHash', d[0].Hash)
+            });
+        });
+        socket.on('retrieveImage', function (hash) {
+            console.log(hash);
+            ipfs.ipfsGet(hash,(d)=>{
+                //socket.emit('image', d)
             });
         })
     });
