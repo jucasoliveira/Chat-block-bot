@@ -47,7 +47,7 @@ The application consists with the follow functionalities :
 
  Docker to deploy the application to the server containerized
    
- [![solarized dualmode](https://github.com/jucasoliveira/Chat-block-bot/tree/develop/public/images/projectOverview.png)]
+ ![project overview](/public/images/projectOverviewPic.png)
 
 ## 1 Set up blockchain
 
