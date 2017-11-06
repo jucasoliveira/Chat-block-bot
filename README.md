@@ -170,13 +170,6 @@ You should see something like this:
 
 Hello and Welcome to IPFS!
 
-██╗██████╗ ███████╗███████╗
-██║██╔══██╗██╔════╝██╔════╝
-██║██████╔╝█████╗  ███████╗
-██║██╔═══╝ ██╔══╝  ╚════██║
-██║██║     ██║     ███████║
-╚═╝╚═╝     ╚═╝     ╚══════╝
-
 If you're seeing this, you have successfully installed
 IPFS and are now interfacing with the ipfs merkledag!
 
