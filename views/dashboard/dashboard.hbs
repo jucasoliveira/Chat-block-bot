@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui.min.css" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/botui/build/botui-theme-default.css" />
-    <link rel="stylesheet" href="stylesheets/black.css" />
+    <link rel="stylesheet" href="../stylesheets/style.css" />
     <nav class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
 
@@ -16,7 +16,6 @@
                     <span class="icon-bar"></span>
                 </button>
             </div>
-
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav">
@@ -43,9 +42,47 @@
     </nav>
 </head>
 <body>
-<div class="botui-app-container" id="api-bot" style="display: inline-block">
-    <bot-ui></bot-ui>
+<div class="container" style="background-color: #78a3ce; vertical-align: top; display: inline-block; width: auto; height: 450px">
+    <!-- SIDEBAR MENU -->
+    <div class="profile-usermenu">
+        <ul class="nav">
+
+                <!-- Search -->
+                <input type="search" placeholder="Search your key"/><a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
+                    <span class="glyphicon glyphicon-search"></span>
+                </a>
+                <p>Select your key below or search above</p>
+            </li>
+            <li class="active">
+                <a href="#">
+                    <i class="glyphicon glyphicon-home"></i>
+                    Overview </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-user"></i>
+                    Account Settings </a>
+            </li>
+            <li>
+                <a href="#" target="_blank">
+                    <i class="glyphicon glyphicon-ok"></i>
+                    Tasks </a>
+            </li>
+            <li>
+                <a href="#">
+                    <i class="glyphicon glyphicon-flag"></i>
+                    Help </a>
+            </li>
+        </ul>
+    </div>
+    <!-- END MENU -->
 </div>
+<div class="container" style="background-color: aliceblue; display: inline-block;">
+    <div class="botui-app-container" id="api-bot" >
+        <bot-ui></bot-ui>
+    </div>
+</div>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script>
 <script src="https://cdn.jsdelivr.net/vue/latest/vue.min.js"></script>
