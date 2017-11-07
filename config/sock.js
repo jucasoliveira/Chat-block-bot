@@ -30,7 +30,7 @@ let fromClient = function() {
         socket.on('retrieveImage', function (hash) {
             console.log(hash);
             ipfs.ipfsGet(hash,(d)=>{
-                //socket.emit('image', d)
+                socket.emit('image', d)
             });
         })
     });

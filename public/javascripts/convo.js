@@ -33,12 +33,15 @@ let init = () => {
                                     placeholder: 'Insert your key', }
                             }
                         ).then(function (res) {
-                            socket.emit('retrieveImage', res.value);
-                        });
+                            botui.message.add({
+                                type: 'embed',
+                                content: `http://localhost:8080/ipfs/${res.value}`
+                            });
+                            confirmFile(res);
+                            //socket.emit('retrieveImage', res.value);
+                        })
                     });
                 }
-
-
             });
         })
 
@@ -109,7 +112,25 @@ let callUIbutton = (data) => {
     })
 };
 
-
+let confirmFile = (hash) => {
+    botui.message.add({
+        content: 'Its that your file?',
+        delay: 1500,
+    }).then(function () {
+        botui.action.button({
+            delay: 1000,
+            action: [{
+                icon: 'check',
+                text: 'YES',
+                value: 'confirm'
+            }, {
+                icon: 'pencil',
+                text: 'NO',
+                value: 'edit'
+            }]
+        })
+    })
+};
 
 let end = (index,hash) => {
 
