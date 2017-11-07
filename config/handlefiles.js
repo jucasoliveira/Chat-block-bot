@@ -5,6 +5,7 @@
  */
 
 let ipfs = require('ipfs-js');
+let concat = require('concat');
 
 ipfs.setProvider(require('ipfs-api')('localhost', '5001'));
 
