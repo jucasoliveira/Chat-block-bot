@@ -1,0 +1,15 @@
+version: "2"
+services:
+  web:
+    build: .
+    volumes:
+      - ./:/app
+    ports:
+      - "3000:3000"
+      - "5000:5000"
+    links:
+      - mongo
+  mongo:
+    image: mongo
+    ports:
+      - "27107:27107"
