@@ -10,22 +10,21 @@
  * @type {Bzz}
  */
 /*
-var Bzz = require('web3-bzz');
-var bzz = new Bzz('http://localhost:8500');
-
-// change provider
-bzz.setProvider('http://swarm-gateways.net');
- console.log(bzz);
- */
 let Web3 = require('web3');
 
-let web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8500'));
+var web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:8500'));
+
 try {
     web3.eth.defaultAccount = web3.eth.coinbase
 } catch (e) {
 }
 
-web3.bzz.setProvider("http://localhost:8500");
+
+web3.bzz.setProvider('http://localhost:8500');
+
+console.log(web3.eth.defaultAccount);
+
+web3.bzz.upload("hello").then(console.log);
 
 let swarmPut = function (buf, cb) {
 
@@ -53,3 +52,4 @@ module.exports = {
     swarmGet,
     swarmPick
 };
+*/
