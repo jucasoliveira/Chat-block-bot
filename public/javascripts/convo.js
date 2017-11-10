@@ -1,6 +1,7 @@
 let botui = new BotUI('api-bot');
 
-let socket = io.connect('http://localhost:8010');
+let socket = io.connect('http://localhost:5000');
+
 // read the BotUI docs : https://docs.botui.org/
 let init = () => {
     botui.message.add({
@@ -87,7 +88,6 @@ let callUIbutton = (data) => {
                     }]
                 }).then(function (res) {
                     if(res.value === 'confirm') {
-                        console.log(definedFile);
                         botui.message
                             .bot({
                                 delay: 1000,
@@ -128,7 +128,11 @@ let confirmFile = (hash) => {
                 text: 'NO',
                 value: 'edit'
             }]
-        })
+        }).then(function (res) {
+            if(res.value === 'confirm') {
+                socket.emit('retrieveImage', hash.value);
+            }
+        }).then(init)
     })
 };
 

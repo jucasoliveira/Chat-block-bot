@@ -19,7 +19,20 @@ let ipfsAdd = (buf, cb) =>{
 };
 
 let ipfsGet = (ipfsHash, callback) => {
-    ipfs.api.cat(ipfsHash, function(err, res) {
+    ipfs.api.cat(ipfsHash, function (err, file) {
+        if (err || !file) return callback(err, null);
+        if(file){
+            let gotIpfsData = function (ipfsData) {
+                callback(err, ipfsData);
+            };
+
+            let concatStream = concat(gotIpfsData);
+
+            file.pipe(concatStream);
+        }
+    })
+    /*
+    ipfs.files.cat(ipfsHash, function(err, res) {
         if (err || !res) return callback(err, null);
 
         let gotIpfsData = function (ipfsData) {
@@ -48,6 +61,7 @@ let ipfsGet = (ipfsHash, callback) => {
             callback(err, res);
         }
     });
+    */
 };
 
 module.exports = {
