@@ -62,7 +62,7 @@ let callUIbutton = (data) => {
                 text: 'Upload your file',
                 value: 'exist'
             }]
-        }).then(function (res) {
+        }).then(function () {
             document.querySelector('input#upload').click();
             let inputElement = document.getElementById("upload");
             inputElement.addEventListener("change", handleFiles, false);
@@ -132,8 +132,8 @@ let confirmFile = (hash) => {
             if(res.value === 'confirm') {
                 socket.emit('retrieveImage', hash.value);
             }
-        }).then(init)
-    })
+        })
+    }).then(init)
 };
 
 let end = (index,hash) => {
@@ -144,7 +144,29 @@ let end = (index,hash) => {
                     loading: false,
                     delay: 1000,
                     content: hash
-                }).then(init)
+                }).then(function(){
+                botui.message.add({
+                    content: 'Do you want to save your file?',
+                    delay: 1500,
+                }).then(function () {
+                    botui.action.button({
+                        delay: 1000,
+                        action: [{
+                            icon: 'check',
+                            text: 'YES',
+                            value: 'confirm'
+                        }, {
+                            icon: 'alert',
+                            text: 'NO',
+                            value: 'edit'
+                        }]
+                    }).then(function (res) {
+                        if(res.value === 'confirm') {
+                            socket.emit('saveList', hash.value);
+                        }
+                    })
+                })
+            }).then(init);
     }
 };
 

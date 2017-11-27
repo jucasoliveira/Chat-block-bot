@@ -23,9 +23,6 @@ let fromClient = function() {
             });
         });
     });
-};
-
-let toSwarm =()=>{
     io.on('connection', function (socket) {
         socket.on('toSwarm', function (res) {
             ipfs.ipfsAdd(res,(d)=>{
@@ -33,9 +30,6 @@ let toSwarm =()=>{
             });
         });
     });
-};
-
-let retrieveImage=()=>{
     io.on('connection', function (socket) {
         socket.on('retrieveImage', function (hash) {
             ipfs.ipfsGet(hash,(d)=>{
@@ -44,4 +38,4 @@ let retrieveImage=()=>{
         })
     });
 };
-module.exports = {conn,fromClient, toSwarm, retrieveImage};
+module.exports = {conn,fromClient};
