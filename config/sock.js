@@ -4,7 +4,8 @@ let io = require('socket.io')(server);
 // let swarm = require('./etherumSwarmNode');
 let api = require('./api');
 let ipfs = require('./handlefiles');
-
+let funct = require('./function');
+let dashboard = require('../routes/dashboard');
 
 
 let conn = function() {
@@ -35,6 +36,24 @@ let fromClient = function() {
             ipfs.ipfsGet(hash,(d)=>{
                 socket.emit('image', d)
             });
+        })
+    });
+    io.on('connection', function (socket) {
+        socket.on('saveList', function (list) {
+            /*
+            ipfs.ipfsGet(hash,(d)=>{
+                socket.emit('image', d)
+            });
+            */
+            console.log('saving', list.user);
+            console.log('file', list.name);
+            console.log('hash', list.hash);
+            funct.userList(list.user, list.hash, list.name)
+                .then(function(result){
+                    if (result) {
+                        app.use('/users/dashboard', dashboard);
+                    }
+                });
         })
     });
 };

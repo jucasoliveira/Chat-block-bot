@@ -3,12 +3,12 @@ let bcrypt = require('bcryptjs'),
     config = require('./loginConfig'); //config file contains all tokens and other private info
 
 // MongoDB connection information
-//let mongodbUrl = 'mongodb://localhost:27017/myproject';
+// let mongodbUrl = 'mongodb://localhost:27017/myproject';
 let mongodbUrl = 'mongodb://mongo:27017';
 let MongoClient = require('mongodb').MongoClient;
 
 //used in local-signup strategy
-exports.localReg = function (username, password) {
+let localReg = function (username, password) {
     let deferred = Q.defer();
 
     MongoClient.connect(mongodbUrl, function (err, db) {
@@ -27,7 +27,8 @@ exports.localReg = function (username, password) {
                     let user = {
                         "username": username,
                         "password": hash,
-                        "avatar": "http://placepuppy.it/images/homepage/Beagle_puppy_6_weeks.JPG"
+                        "avatar": "http://placepuppy.it/images/homepage/Beagle_puppy_6_weeks.JPG",
+                        "filelist" : []
                     };
 
                     console.log("CREATING USER:", username);
@@ -45,11 +46,13 @@ exports.localReg = function (username, password) {
 };
 
 
-//check if user exists
-//if user exists check if passwords match (use bcrypt.compareSync(password, hash); // true where 'hash' is password in DB)
-//if password matches take into website
-//if user doesn't exist or password doesn't match tell them it failed
-exports.localAuth = function (username, password) {
+/**check if user exists
+ *if user exists check if passwords match (use bcrypt.compareSync(password, hash); // true where 'hash' is password in DB)
+ *if password matches take into website
+ *if user doesn't exist or password doesn't match tell them it failed
+ **/
+
+let localAuth = function (username, password) {
     let deferred = Q.defer();
 
     MongoClient.connect(mongodbUrl, function (err, db) {
@@ -80,4 +83,58 @@ exports.localAuth = function (username, password) {
     });
 
     return deferred.promise;
+};
+
+let userList = function(username, hash, filename){
+    let deferred = Q.defer();
+
+    MongoClient.connect(mongodbUrl, function (err, db) {
+        let collection = db.collection('localUsers');
+        console.log('pushing');
+        collection.update(
+            {"username": username},
+            {$push:
+                {"filelist":
+                    {"name": filename, "hash" : hash}
+                }
+            }).then( function (result) {
+                if(null === result){
+                    console.log('FILE DIDNT UPLOADED');
+                    deferred.resolve(false);
+                } else {
+                    deferred.resolve(true);
+                }
+            db.close()
+        });
+
+    });
+    return deferred.promise;
+};
+/*
+retrieveList = function(username, hash, filename){
+    let deferred = Q.defer();
+
+    MongoClient.connect(mongodbUrl, function (err, db) {
+        let collection = db.collection('localUsers');
+        console.log(collection);
+        collection.update(
+            {"username": username},
+            {$push:
+                {"filelist.$":
+                    {"name": filename, "hash" : hash}
+                }
+            }).then(
+                db.close()
+            )
+
+    });
+
+};
+
+*/
+module.exports = {
+    localReg,
+    localAuth,
+    userList,
+ //   retrieveList
 };
