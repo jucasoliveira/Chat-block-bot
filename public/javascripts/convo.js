@@ -2,6 +2,8 @@ let botui = new BotUI('api-bot');
 
 let socket = io.connect('http://localhost:5000');
 
+let listview = "HELLO!";
+
 // read the BotUI docs : https://docs.botui.org/
 let init = () => {
     botui.message.add({
@@ -37,8 +39,7 @@ let init = () => {
                             botui.message.add({
                                 type: 'embed',
                                 content: `http://localhost:8080/ipfs/${res.value}`
-                            });
-                            confirmFile(res);
+                            }).then(init);
                             //socket.emit('retrieveImage', res.value);
                         })
                     });
@@ -132,8 +133,8 @@ let confirmFile = (hash) => {
             if(res.value === 'confirm') {
                 socket.emit('retrieveImage', hash.value);
             }
-        })
-    }).then(init)
+        }).then(init)
+    })
 };
 
 let end = (index,hash) => {
@@ -146,27 +147,42 @@ let end = (index,hash) => {
                     content: hash
                 }).then(function(){
                 botui.message.add({
-                    content: 'Do you want to save your file?',
+                    content: 'Do you want to save your file on your account?',
                     delay: 1500,
                 }).then(function () {
                     botui.action.button({
                         delay: 1000,
                         action: [{
                             icon: 'check',
-                            text: 'YES',
+                            text: 'Yes',
                             value: 'confirm'
                         }, {
                             icon: 'alert',
-                            text: 'NO',
+                            text: 'No',
                             value: 'edit'
                         }]
                     }).then(function (res) {
                         if(res.value === 'confirm') {
-                            socket.emit('saveList', hash.value);
+                            botui.message
+                                .bot({
+                                    delay: 1000,
+                                    content: 'How would you name it?'
+                                }).then(function () {
+                                botui.action.text({
+                                        action: {
+                                            placeholder: 'receipt01', }
+                                    }
+                                ).then(function (res) {
+                                    let userElement = document.getElementById("name");
+                                    socket.emit('saveList', { 'user': userElement.innerHTML, 'name' : res.value, 'hash' : hash }); // sends file hash to be stored
+                                }).then(init);
+                            })
+                        } else {
+                            init();
                         }
-                    })
+                    });
                 })
-            }).then(init);
+            })
     }
 };
 
