@@ -13,6 +13,7 @@ let conn = function() {
 
     app.get('/', function (req, res) {
         res.sendfile(__dirname + '/index.html');
+        console.log(req);
     });
 };
 
@@ -45,13 +46,11 @@ let fromClient = function() {
                 socket.emit('image', d)
             });
             */
-            console.log('saving', list.user);
-            console.log('file', list.name);
-            console.log('hash', list.hash);
             funct.userList(list.user, list.hash, list.name)
                 .then(function(result){
                     if (result) {
-                        app.use('/users/dashboard', dashboard);
+                        console.log('updating list');
+                        socket.emit('updateList', { 'return': true });
                     }
                 });
         })

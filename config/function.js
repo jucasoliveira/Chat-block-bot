@@ -3,8 +3,8 @@ let bcrypt = require('bcryptjs'),
     config = require('./loginConfig'); //config file contains all tokens and other private info
 
 // MongoDB connection information
-// let mongodbUrl = 'mongodb://localhost:27017/myproject';
-let mongodbUrl = 'mongodb://mongo:27017';
+let mongodbUrl = 'mongodb://localhost:27017/myproject';
+// let mongodbUrl = 'mongodb://mongo:27017';
 let MongoClient = require('mongodb').MongoClient;
 
 //used in local-signup strategy
