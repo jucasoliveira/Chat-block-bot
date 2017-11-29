@@ -15,7 +15,7 @@ let init = () => {
                     placeholder: 'Retrieve or Upload', }
             }
         ).then(function (res) {
-            socket.emit('fromClient', { client : res.value }); // sends the message typed to server
+            socket.emit('fromClient', { client : res.value });
 
         }).then(function () {
             socket.on('fromServer', function (data) { // recieveing a reply from server.
@@ -175,6 +175,12 @@ let end = (index,hash) => {
                                 ).then(function (res) {
                                     let userElement = document.getElementById("name");
                                     socket.emit('saveList', { 'user': userElement.innerHTML, 'name' : res.value, 'hash' : hash }); // sends file hash to be stored
+                                    socket.on('updateList', function (d) {
+                                        if(d) {
+                                            let list = document.getElementsByClassName("listContainer");
+                                            list[0].innerHTML += '<li class="active" value='+hash+'><a href="#"><i class="glyphicon glyphicon-ok"></i> '+res.value+'</a></li>'
+                                        }
+                                    })
                                 }).then(init);
                             })
                         } else {
