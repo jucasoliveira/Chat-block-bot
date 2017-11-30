@@ -24,7 +24,7 @@
                     <p class="navbar-text">
                         <strong>Hi,</strong>
                         <img src="{{user.avatar}}" width="20" height="20">
-                        {{user.username}}
+                    <div id="name" style="display:inline-block;margin-top: 15px;">{{user.username}}</div>
                     </p>
                 </li>
                 </ul>
@@ -42,43 +42,31 @@
     </nav>
 </head>
 <body>
-<div class="container" style="background-color: #78a3ce; vertical-align: top; display: inline-block; width: auto; height: 450px">
+<div class="container-fluid" style="background-color: #008673; vertical-align: top; display: inline-block; width: auto;  height: 860px; overflow:hidden; overflow-y:scroll;">
     <!-- SIDEBAR MENU -->
     <div class="profile-usermenu">
         <ul class="nav">
-
-                <!-- Search -->
-                <input type="search" placeholder="Search your key"/><a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
-                    <span class="glyphicon glyphicon-search"></span>
-                </a>
-                <p>Select your key below or search above</p>
-            </li>
-            <li class="active">
-                <a href="#">
-                    <i class="glyphicon glyphicon-home"></i>
-                    Overview </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="glyphicon glyphicon-user"></i>
-                    Account Settings </a>
-            </li>
-            <li>
-                <a href="#" target="_blank">
-                    <i class="glyphicon glyphicon-ok"></i>
-                    Tasks </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="glyphicon glyphicon-flag"></i>
-                    Help </a>
-            </li>
+            <!-- Search -->
+            <input type="search" placeholder="Search your key"/>
+            <a data-toggle="collapse" href="#search" class="btn btn-default" id="search-trigger">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+            <p>Select your key below or search above</p>
+            <div class="listContainer">
+                {{#each fileList}}
+                    <li class="active" id="{{hash}}" onclick="retrieveFromList(this)">
+                        <a class="pointer" >
+                            <i class="glyphicon glyphicon-ok"></i>
+                            {{name}} </a>
+                    </li>
+                {{/each}}
+            </div>
         </ul>
     </div>
     <!-- END MENU -->
 </div>
-<div class="container" style="background-color: aliceblue; display: inline-block;">
-    <div class="botui-app-container" id="api-bot" >
+<div class="container" style="background-color: #137886; display: inline-block; height: 860px ; width: 80%">
+    <div class="botui-app-container" id="api-bot" style="margin-top: 10px" >
         <bot-ui></bot-ui>
     </div>
 </div>
