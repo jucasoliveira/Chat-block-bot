@@ -178,7 +178,7 @@ let end = (index,hash) => {
                                     socket.on('updateList', function (d) {
                                         if(d) {
                                             let list = document.getElementsByClassName("listContainer");
-                                            list[0].innerHTML += '<li class="active" value='+hash+'><a href="#"><i class="glyphicon glyphicon-ok"></i> '+res.value+'</a></li>'
+                                            list[0].innerHTML += '<li class="active" id="'+hash+'" onclick="retrieveFromList(this)"><a class="pointer"><i class="glyphicon glyphicon-ok" ></i> '+res.value+'</a></li>'
                                         }
                                     })
                                 }).then(init);
@@ -190,6 +190,19 @@ let end = (index,hash) => {
                 })
             })
     }
+};
+
+let retrieveFromList = (elem) =>{
+     let hash = elem.id;
+    return botui.message.add({
+        content: 'Retrieving from list : ' + hash + '.',
+    }).then(function () {
+        botui.message.add({
+            type: 'embed',
+            content: `http://localhost:8080/ipfs/${hash}`
+        }).then(init);
+        //socket.emit('retrieveImage', res.value);
+    });
 };
 
 init();
