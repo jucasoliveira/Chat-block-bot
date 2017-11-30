@@ -4,11 +4,15 @@ let apiai = require('apiai');
 //Enter your API Key
 let app = apiai("3fb64ef9693648b196f5dc1f81a11bcb");
 
+let sessionID;
+let sendID = (id) => {
+    sessionID = id;
+};
 
 // Function which returns speech from api.ai
 let getRes = function(query) {
     let request = app.textRequest(query, {
-        sessionId: '<unique session id>'
+        sessionId: sessionID
     });
     const responseFromAPI = new Promise(
         function (resolve, reject) {
@@ -28,4 +32,4 @@ let getRes = function(query) {
 // test the command :
 //getRes('hello').then(function(res){console.log(res)});
 
-module.exports = {getRes};
+module.exports = {getRes, sendID};
