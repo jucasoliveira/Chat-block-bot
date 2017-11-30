@@ -1,10 +1,10 @@
 let botui = new BotUI('api-bot');
-
 let socket = io.connect('http://localhost:5000');
-
 let listview = "HELLO!";
 
 // read the BotUI docs : https://docs.botui.org/
+let sessID;
+
 let init = () => {
     botui.message.add({
         content: 'What do you need?',
@@ -15,7 +15,7 @@ let init = () => {
                     placeholder: 'Retrieve or Upload', }
             }
         ).then(function (res) {
-            socket.emit('fromClient', { client : res.value });
+            socket.emit('fromClient', { client : res.value});
 
         }).then(function () {
             socket.on('fromServer', function (data) { // recieveing a reply from server.

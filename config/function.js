@@ -3,8 +3,8 @@ let bcrypt = require('bcryptjs'),
     config = require('./loginConfig'); //config file contains all tokens and other private info
 
 // MongoDB connection information
-let mongodbUrl = 'mongodb://localhost:27017/myproject';
-// let mongodbUrl = 'mongodb://mongo:27017';
+// let mongodbUrl = 'mongodb://localhost:27017/myproject';
+ let mongodbUrl = 'mongodb://mongo:27017';
 let MongoClient = require('mongodb').MongoClient;
 
 //used in local-signup strategy
@@ -12,7 +12,6 @@ let localReg = function (username, password) {
     let deferred = Q.defer();
 
     MongoClient.connect(mongodbUrl, function (err, db) {
-        console.log("conecting");
         let collection = db.collection('localUsers');
 
         //check if username is already assigned in our database
@@ -90,7 +89,6 @@ let userList = function(username, hash, filename){
 
     MongoClient.connect(mongodbUrl, function (err, db) {
         let collection = db.collection('localUsers');
-        console.log('pushing');
         collection.update(
             {"username": username},
             {$push:
@@ -110,31 +108,9 @@ let userList = function(username, hash, filename){
     });
     return deferred.promise;
 };
-/*
-retrieveList = function(username, hash, filename){
-    let deferred = Q.defer();
 
-    MongoClient.connect(mongodbUrl, function (err, db) {
-        let collection = db.collection('localUsers');
-        console.log(collection);
-        collection.update(
-            {"username": username},
-            {$push:
-                {"filelist.$":
-                    {"name": filename, "hash" : hash}
-                }
-            }).then(
-                db.close()
-            )
-
-    });
-
-};
-
-*/
 module.exports = {
     localReg,
     localAuth,
-    userList,
- //   retrieveList
+    userList
 };

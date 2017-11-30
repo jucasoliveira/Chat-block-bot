@@ -13,7 +13,6 @@ let conn = function() {
 
     app.get('/', function (req, res) {
         res.sendfile(__dirname + '/index.html');
-        console.log(req);
     });
 };
 
@@ -49,7 +48,6 @@ let fromClient = function() {
             funct.userList(list.user, list.hash, list.name)
                 .then(function(result){
                     if (result) {
-                        console.log('updating list');
                         socket.emit('updateList', { 'return': true });
                     }
                 });
