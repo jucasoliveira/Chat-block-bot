@@ -5,81 +5,16 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
-
 let methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    TwitterStrategy = require('passport-twitter'),
-    GoogleStrategy = require('passport-google'),
-    FacebookStrategy = require('passport-facebook');
+    index = require('./routes/index'),
+    users = require('./routes/users'),
+    dashboard = require('./routes/dashboard'),
+    renderText = require('./routes/renderFile');
 
-let index = require('./routes/index');
-let users = require('./routes/users');
-let dashboard = require('./routes/dashboard');
-
-// Login
-
-let config = require('./config/loginConfig'),
-    funct = require('./config/function.js');
-
-
-// Passport session setup.
-passport.serializeUser(function(user, done) {
-    console.log("serializing " + user.username);
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    console.log("deserializing " + obj);
-    done(null, obj);
-});
-
-// Use the LocalStrategy within Passport to login users.
-passport.use('local-signin', new LocalStrategy(
-    {passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, done) {
-        funct.localAuth(username, password)
-            .then(function (user) {
-                if (user) {
-                    console.log("LOGGED IN AS: " + user.username);
-                    req.session.success = 'You are successfully logged in ' + user.username + '!';
-                    done(null, user);
-                }
-                if (!user) {
-                    console.log("COULD NOT LOG IN");
-                    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-                    done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
-    }
-));
-
-// Use the LocalStrategy within Passport to Register/"signup" users.
-passport.use('local-signup', new LocalStrategy(
-    {passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, done) {
-        funct.localReg(username, password)
-            .then(function (user) {
-                if (user) {
-                    console.log("REGISTERED: " + user.username);
-                    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-                    done(null, user);
-                }
-                if (!user) {
-                    console.log("COULD NOT REGISTER");
-                    req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-                    done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
-    }
-));
+// import passport configuration to login
+require('./config/passport')(passport);
 
 // Simple route middleware to ensure user is authenticated.
 function ensureAuthenticated(req, res, next) {
@@ -149,6 +84,20 @@ app.use('/login', passport.authenticate('local-signin', {
         failureRedirect: '/singing'
     })
 );
+
+app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
+
+
+// route for facebook authentication and login
+app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+app.use('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect : '/profile',
+        failureRedirect : '/'
+    }));
+
 
 // logs user out of site, deleting them from the session, and returns to homepage
 app.use('/logout', function(req, res){

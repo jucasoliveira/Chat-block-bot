@@ -14,14 +14,17 @@ let getRes = function(query) {
     let request = app.textRequest(query, {
         sessionId: sessionID
     });
+    console.log('opening request');
     const responseFromAPI = new Promise(
         function (resolve, reject) {
             request.on('error', function(error) {
+                console.log('err',error);
                 reject(error);
             });
             request.on('response', function(response) {
                 let generator;
                 generator = {action : response.result.action , message : response.result.fulfillment.speech};
+                console.log('generator',generator);
                 resolve(generator);
             });
         });
