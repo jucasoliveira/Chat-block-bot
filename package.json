@@ -3,7 +3,9 @@
   "version": "0.1.0 beta",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "apiai": "^4.0.3",
@@ -37,6 +39,8 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.4",
     "url": "^0.11.0",
-    "web3": "^1.0.0-beta.24"
-  }
+    "web3": "^1.0.0-beta.24",
+    "snyk": "^1.54.0"
+  },
+  "snyk": true
 }
