@@ -5,81 +5,27 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+//security modules
+let helmet = require('helmet');
+let ExpressBrute = require('express-brute');
+let csrf = require('csurf');
+
+let csrfProtection = csrf({ cookie: true });
+let parseForm = bodyParser.urlencoded({ extended: false });
+
+let store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
+let bruteforce = new ExpressBrute(store);
 
 let methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local'),
-    TwitterStrategy = require('passport-twitter'),
-    GoogleStrategy = require('passport-google'),
-    FacebookStrategy = require('passport-facebook');
+    index = require('./routes/index'),
+    users = require('./routes/users'),
+    dashboard = require('./routes/dashboard'),
+    renderText = require('./routes/renderFile');
 
-let index = require('./routes/index');
-let users = require('./routes/users');
-let dashboard = require('./routes/dashboard');
-
-// Login
-
-let config = require('./config/loginConfig'),
-    funct = require('./config/function.js');
-
-
-// Passport session setup.
-passport.serializeUser(function(user, done) {
-    console.log("serializing " + user.username);
-    done(null, user);
-});
-
-passport.deserializeUser(function(obj, done) {
-    console.log("deserializing " + obj);
-    done(null, obj);
-});
-
-// Use the LocalStrategy within Passport to login users.
-passport.use('local-signin', new LocalStrategy(
-    {passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, done) {
-        funct.localAuth(username, password)
-            .then(function (user) {
-                if (user) {
-                    console.log("LOGGED IN AS: " + user.username);
-                    req.session.success = 'You are successfully logged in ' + user.username + '!';
-                    done(null, user);
-                }
-                if (!user) {
-                    console.log("COULD NOT LOG IN");
-                    req.session.error = 'Could not log user in. Please try again.'; //inform user could not log them in
-                    done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
-    }
-));
-
-// Use the LocalStrategy within Passport to Register/"signup" users.
-passport.use('local-signup', new LocalStrategy(
-    {passReqToCallback : true}, //allows us to pass back the request to the callback
-    function(req, username, password, done) {
-        funct.localReg(username, password)
-            .then(function (user) {
-                if (user) {
-                    console.log("REGISTERED: " + user.username);
-                    req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-                    done(null, user);
-                }
-                if (!user) {
-                    console.log("COULD NOT REGISTER");
-                    req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-                    done(null, user);
-                }
-            })
-            .fail(function (err){
-                console.log(err.body);
-            });
-    }
-));
+// import passport configuration to login
+require('./config/passport')(passport);
 
 // Simple route middleware to ensure user is authenticated.
 function ensureAuthenticated(req, res, next) {
@@ -104,6 +50,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
@@ -127,13 +74,13 @@ app.use(function(req, res, next){
 });
 
 
-app.use('/', index);
+app.use('/', csrfProtection, index);
 app.use('/users', users);
-app.use('/users/dashboard', dashboard);
+app.use('/users/dashboard',parseForm, csrfProtection, dashboard);
 
 // displays our signup page
-app.use('/singing', function(req, res){
-    res.render('singing');
+app.use('/singing', parseForm, csrfProtection, function(req, res){
+    res.render('singing', {csrfToken: req.csrfToken()});
 });
 
 // sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
@@ -144,11 +91,25 @@ app.use('/local-reg', passport.authenticate('local-signup', {
 );
 
 // sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.use('/login', passport.authenticate('local-signin', {
+app.use('/login',bruteforce.prevent, passport.authenticate('local-signin', {
         successRedirect: '/users/dashboard',
         failureRedirect: '/singing'
     })
 );
+
+app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
+
+
+// route for facebook authentication and login
+app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+
+// handle the callback after facebook has authenticated the user
+app.use('/auth/facebook/callback',
+    passport.authenticate('facebook', {
+        successRedirect : '/users/dashboard',
+        failureRedirect : '/singing'
+    }));
+
 
 // logs user out of site, deleting them from the session, and returns to homepage
 app.use('/logout', function(req, res){
