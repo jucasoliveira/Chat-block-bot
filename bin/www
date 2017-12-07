@@ -7,6 +7,16 @@
 var app = require('../app');
 var debug = require('debug')('chat-block-bot:server');
 var http = require('http');
+let https = require('https');
+let fs = require('fs');
+
+
+let options = {
+    key: fs.readFileSync('./config/certs/server/myserver.key'),
+    cert: fs.readFileSync('./config/certs/server/pure-ridge-42982_herokuapp_com.crt'),
+    requestCert: false,
+    rejectUnauthorized: false
+};
 
 /**
  * Get port from environment and store in Express.
@@ -19,8 +29,8 @@ app.set('port', port);
  * Create HTTP server.
  */
 
+// var server = https.createServer(options,app);
 var server = http.createServer(app);
-
 /**
  * Listen on provided port, on all network interfaces.
  */

@@ -1,6 +1,6 @@
 {
   "name": "chat-block-bot",
-  "version": "0.0.0",
+  "version": "0.1.0 beta",
   "private": true,
   "scripts": {
     "start": "node ./bin/www"
@@ -13,28 +13,30 @@
     "buffer": "^5.0.8",
     "concat": "^1.0.3",
     "cookie-parser": "~1.4.3",
+    "csrf": "^3.0.6",
+    "csurf": "^1.9.0",
     "debug": "~2.6.3",
     "express": "~4.15.2",
+    "express-brute": "^1.0.1",
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
     "hbs": "~4.0.1",
+    "helmet": "^3.9.0",
     "http": "0.0.0",
     "ipfs-js": "0.0.11",
+    "jasmine-node": "^1.14.5",
     "method-override": "^2.3.10",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",
     "morgan": "~1.8.1",
     "passport": "^0.2.0",
     "passport-facebook": "^1.0.3",
-    "passport-google": "^0.3.0",
     "passport-local": "^1.0.0",
-    "passport-twitter": "^1.0.2",
     "q": "^1.0.1",
     "serve-favicon": "~2.4.2",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.4",
     "url": "^0.11.0",
-    "web3": "^1.0.0-beta.24",
-    "web3-bzz": "^1.0.0-beta.22"
+    "web3": "^1.0.0-beta.24"
   }
 }

@@ -5,6 +5,17 @@ let logger = require('morgan');
 let cookieParser = require('cookie-parser');
 let bodyParser = require('body-parser');
 
+//security modules
+let helmet = require('helmet');
+let ExpressBrute = require('express-brute');
+let csrf = require('csurf');
+
+let csrfProtection = csrf({ cookie: true });
+let parseForm = bodyParser.urlencoded({ extended: false });
+
+let store = new ExpressBrute.MemoryStore(); // stores state locally, don't use this in production
+let bruteforce = new ExpressBrute(store);
+
 let methodOverride = require('method-override'),
     session = require('express-session'),
     passport = require('passport'),
@@ -39,6 +50,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet());
 app.use(methodOverride('X-HTTP-Method-Override'));
 app.use(session({secret: 'supernova', saveUninitialized: true, resave: true}));
 app.use(passport.initialize());
@@ -62,13 +74,13 @@ app.use(function(req, res, next){
 });
 
 
-app.use('/', index);
+app.use('/', csrfProtection, index);
 app.use('/users', users);
-app.use('/users/dashboard', dashboard);
+app.use('/users/dashboard',parseForm, csrfProtection, dashboard);
 
 // displays our signup page
-app.use('/singing', function(req, res){
-    res.render('singing');
+app.use('/singing', parseForm, csrfProtection, function(req, res){
+    res.render('singing', {csrfToken: req.csrfToken()});
 });
 
 // sends the request through our local signup strategy, and if successful takes user to homepage, otherwise returns then to signin page
@@ -79,7 +91,7 @@ app.use('/local-reg', passport.authenticate('local-signup', {
 );
 
 // sends the request through our local login/signin strategy, and if successful takes user to homepage, otherwise returns then to signin page
-app.use('/login', passport.authenticate('local-signin', {
+app.use('/login',bruteforce.prevent, passport.authenticate('local-signin', {
         successRedirect: '/users/dashboard',
         failureRedirect: '/singing'
     })
@@ -94,8 +106,8 @@ app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' })
 // handle the callback after facebook has authenticated the user
 app.use('/auth/facebook/callback',
     passport.authenticate('facebook', {
-        successRedirect : '/profile',
-        failureRedirect : '/'
+        successRedirect : '/users/dashboard',
+        failureRedirect : '/singing'
     }));
 
 
