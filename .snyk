@@ -5,21 +5,16 @@ ignore: {}
 patch:
   'npm:minimatch:20160620':
     - jasmine-node > gaze > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - jasmine-node > gaze > fileset > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - jasmine-node > gaze > fileset > glob > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - ipfs-js > node-ipfs-api > vinyl-fs-browser > glob-watcher > gaze > globule > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - ipfs-js > node-ipfs-api > vinyl-multipart-stream > vinyl-fs-that-respects-files > glob-watcher > gaze > globule > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - ipfs-js > node-ipfs-api > vinyl-fs-browser > glob-watcher > gaze > globule > glob > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
+        patched: '2017-12-07T13:37:34.694Z'
     - ipfs-js > node-ipfs-api > vinyl-multipart-stream > vinyl-fs-that-respects-files > glob-watcher > gaze > globule > glob > minimatch:
-        patched: '2017-12-07T13:33:48.780Z'
-        patched: '2017-12-07T13:32:34.177Z'
-    - jasmine-node > gaze > fileset > minimatch:
-        patched: '2017-12-07T13:32:34.177Z'
-    - jasmine-node > gaze > fileset > glob > minimatch:
-        patched: '2017-12-07T13:32:34.177Z'
+        patched: '2017-12-07T13:37:34.694Z'
