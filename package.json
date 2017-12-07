@@ -3,12 +3,14 @@
   "version": "0.1.0 beta",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "snyk-protect": "snyk protect",
+    "prepare": "npm run snyk-protect"
   },
   "dependencies": {
     "apiai": "^4.0.3",
     "bcryptjs": "^0.7.12",
-    "body-parser": "~1.17.1",
+    "body-parser": "~1.18.2",
     "botui": "^0.3.4",
     "buffer": "^5.0.8",
     "concat": "^1.0.3",
@@ -16,7 +18,7 @@
     "csrf": "^3.0.6",
     "csurf": "^1.9.0",
     "debug": "~2.6.3",
-    "express": "~4.15.2",
+    "express": "~4.16.0",
     "express-brute": "^1.0.1",
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
@@ -28,7 +30,7 @@
     "method-override": "^2.3.10",
     "mongodb": "^2.2.25",
     "monk": "^4.0.0",
-    "morgan": "~1.8.1",
+    "morgan": "~1.9.0",
     "passport": "^0.2.0",
     "passport-facebook": "^1.0.3",
     "passport-local": "^1.0.0",
@@ -37,6 +39,8 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.4",
     "url": "^0.11.0",
-    "web3": "^1.0.0-beta.24"
-  }
+    "web3": "^1.0.0-beta.24",
+    "snyk": "^1.54.0"
+  },
+  "snyk": true
 }
