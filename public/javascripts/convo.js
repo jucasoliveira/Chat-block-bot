@@ -1,5 +1,5 @@
 let botui = new BotUI('api-bot');
-let socket = io.connect('https://54.225.135.129:8000', { secure: true, reconnect: true, requestCert: false, rejectUnauthorized: false });
+let socket = io.connect('http://localhost:5000', { secure: true, reconnect: true, requestCert: false, rejectUnauthorized: false });
 let listview = "HELLO!";
 
 // read the BotUI docs : https://docs.botui.org/

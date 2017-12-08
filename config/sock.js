@@ -17,15 +17,15 @@ let options = {
 };
 
 
-let server = https.createServer(options, app);
-//let server = http.createServer(app);
+// let server = https.createServer(options, app);
+ let server = require('http').Server(app);
 
 let io = require('socket.io')(server);
 io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
 
 let conn = function() {
-    server.listen(8000, function(){
-        console.log('listening on *:8000');
+    server.listen(5000, function(){
+        console.log('listening on *:5000');
     });
 
     app.get('/', function (req, res) {
