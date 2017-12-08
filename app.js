@@ -97,8 +97,6 @@ app.use('/login',bruteforce.prevent, passport.authenticate('local-signin', {
     })
 );
 
-app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
-
 
 // route for facebook authentication and login
 app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
@@ -109,6 +107,10 @@ app.use('/auth/facebook/callback',
         successRedirect : '/users/dashboard',
         failureRedirect : '/singing'
     }));
+
+
+app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
+
 
 
 // logs user out of site, deleting them from the session, and returns to homepage
