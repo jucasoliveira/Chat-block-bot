@@ -1,0 +1,11 @@
+An unknown error occurred. Please include the trace below when reporting to Snyk:
+
+Error: 413
+    at /usr/local/lib/node_modules/snyk/lib/snyk-test/npm/index.js:119:23
+    at /usr/local/lib/node_modules/snyk/lib/request/index.js:12:7
+    at tryCatch (/usr/local/lib/node_modules/snyk/node_modules/es6-promise/dist/es6-promise.js:410:12)
+    at invokeCallback (/usr/local/lib/node_modules/snyk/node_modules/es6-promise/dist/es6-promise.js:425:13)
+    at publish (/usr/local/lib/node_modules/snyk/node_modules/es6-promise/dist/es6-promise.js:393:7)
+    at flush (/usr/local/lib/node_modules/snyk/node_modules/es6-promise/dist/es6-promise.js:121:5)
+    at _combinedTickCallback (internal/process/next_tick.js:131:7)
+    at process._tickCallback (internal/process/next_tick.js:180:9)

@@ -31,7 +31,7 @@ let ipfsGet = (ipfsHash, callback) => {
             file.pipe(concatStream);
         }
     })
-    /*
+    /* Future implementation
     ipfs.files.cat(ipfsHash, function(err, res) {
         if (err || !res) return callback(err, null);
 

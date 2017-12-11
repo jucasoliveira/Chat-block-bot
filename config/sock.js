@@ -1,4 +1,4 @@
-let app = require('express')();
+// let app = require('express')();
 
 // let swarm = require('./etherumSwarmNode');
 let api = require('./api');
@@ -8,6 +8,7 @@ let funct = require('./function');
 let http= require('http');
 let https = require('https');
 let fs = require('fs');
+let io;
 
 let options = {
     key: fs.readFileSync('./config/certs/server/myserver.key'),
@@ -17,13 +18,15 @@ let options = {
 };
 
 
-let server = https.createServer(options, app);
+// let server = https.createServer(options, app);
 //let server = http.createServer(app);
 
-let io = require('socket.io')(server);
-io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
+// let io = require('socket.io')(server);
+// io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
 
-let conn = function() {
+let conn = function(server) {
+
+    /*
     server.listen(8000, function(){
         console.log('listening on *:8000');
     });
@@ -32,9 +35,14 @@ let conn = function() {
         res.set('Content-Type', 'text/xml; charset=utf-8');
         res.sendfile(__dirname + '/index.html');
     });
+
+    */
 };
 
-let fromClient = function() {
+let fromClient = function(server) {
+
+    io = require('socket.io')(server);
+
     io.on('connection', function (socket) {
         socket.on('fromClient', function (data) {
             api.getRes(data.client).then(function(res){

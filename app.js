@@ -124,8 +124,9 @@ app.use('/logout', function(req, res){
 
 
 // Socket connection
-socket.conn();
-socket.fromClient();
+let server = require('http').Server(app);
+// socket.conn(server);
+socket.fromClient(server);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -145,4 +146,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};
