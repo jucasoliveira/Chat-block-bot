@@ -6,6 +6,7 @@
 
 let ipfs = require('ipfs-js');
 let concat = require('concat');
+let fs = require('fs');
 
 ipfs.setProvider(require('ipfs-api')('localhost', '5001'));
 
@@ -19,53 +20,39 @@ let ipfsAdd = (buf, cb) =>{
 };
 
 let ipfsGet = (ipfsHash, callback) => {
-    ipfs.api.cat(ipfsHash, function (err, file) {
+    let ipfPath = '/ipfs/'+ipfsHash;
+    let sendReturn;
+    ipfs.api.cat(ipfPath, function (err, file) {
         if (err || !file) return callback(err, null);
         if(file){
             let gotIpfsData = function (ipfsData) {
                 callback(err, ipfsData);
             };
 
-            let concatStream = concat(gotIpfsData);
-
-            file.pipe(concatStream);
+            // let concatStream = concat(gotIpfsData);
+            let type = fs.createWriteStream( './public/tempfile/' + `${ipfsHash}.jpg`);
+            file.pipe(type);
+            sendReturn = true;
+            callback(sendReturn);
+        } else {
+            sendReturn = false;
+            callback(sendReturn);
         }
     })
-    /*
-    ipfs.files.cat(ipfsHash, function(err, res) {
-        if (err || !res) return callback(err, null);
+};
 
-        let gotIpfsData = function (ipfsData) {
-            callback(err, ipfsData);
-        };
-
-        let concatStream = concat(gotIpfsData);
-
-        if(res.readable) {
-            // Returned as a stream
-            res.pipe(concatStream);
-        } else {
-
-            if (!ipfs.api.Buffer.isBuffer(res)) {
-
-                if (typeof res === 'object')
-                    res = JSON.stringify(res);
-
-                if (typeof res !== 'string')
-                    throw new Error("ipfs.cat response type not recognized; expecting string, buffer, or object");
-
-                res = new ipfs.api.Buffer(res, 'binary');
-            }
-
-            // Returned as a string
-            callback(err, res);
-        }
+let ipfsRemove = (ipfsHash, callback) => {
+    console.log('removing file');
+    fs.unlink('./public/tempfile/' + `${ipfsHash}.jpg`, function(err){
+        if(err) return console.log(err);
+        console.log('file deleted successfully');
+        callback(true);
     });
-    */
 };
 
 module.exports = {
     ipfsAdd,
-    ipfsGet
+    ipfsGet,
+    ipfsRemove
 };
 

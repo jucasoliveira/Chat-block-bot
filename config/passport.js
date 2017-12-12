@@ -43,6 +43,7 @@ module.exports = function(passport) {
     passport.use('local-signin', new LocalStrategy(
         {passReqToCallback : true}, //allows us to pass back the request to the callback
         function(req, username, password, done) {
+            console.log('here');
             funct.localAuth(username, password)
                 .then(function (user) {
                     if (user) {
