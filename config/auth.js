@@ -6,7 +6,7 @@ module.exports = {
     'facebookAuth' : {
         'clientID' 		: '128397204540271', // your App ID
         'clientSecret' 	: '7056337b78c7edf621a208f883358167', // your App Secret
-        'callbackURL' 	: 'https://localhost:3000/auth/facebook/callback'
+        'callbackURL' 	: 'https://pure-ridge-42982.herokuapp.com/auth/facebook/callback'
     },
 
     'twitterAuth' : {

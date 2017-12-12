@@ -99,7 +99,7 @@ app.use('/login',bruteforce.prevent, passport.authenticate('local-signin', {
 
 
 // route for facebook authentication and login
-app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+app.use('/auth/facebook', passport.authenticate('facebook', { scope : ['public_profile', 'email'] }));
 
 // handle the callback after facebook has authenticated the user
 app.use('/auth/facebook/callback',
