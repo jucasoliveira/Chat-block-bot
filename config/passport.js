@@ -8,7 +8,7 @@ let FacebookStrategy = require('passport-facebook').Strategy;
 // let User       		= require('../app/models/user');
 
 // load the auth variables
- let configAuth = require('./auth');
+let configAuth = require('./auth');
 let funct = require('./function.js');
 
 // expose this function to our app using module.exports
@@ -118,7 +118,7 @@ module.exports = function(passport) {
                         return done(null, user); // user found, return that user
                     } else {
                         // if there is no user found with that facebook id, create them
-                        var newUser            = new User();
+                        let newUser            = new User();
 
                         // set all of the facebook information in our user model
                         newUser.facebook.id    = profile.id; // set the users facebook id

@@ -1,6 +1,5 @@
 let botui = new BotUI('api-bot');
-let socket = io.connect('http://localhost:5000', { secure: true, reconnect: true, requestCert: false, rejectUnauthorized: false });
-let listview = "HELLO!";
+let socket = io('//pure-ridge-42982.herokuapp.com');
 
 // read the BotUI docs : https://docs.botui.org/
 let sessID;
@@ -36,11 +35,18 @@ let init = () => {
                                     placeholder: 'Insert your key', }
                             }
                         ).then(function (res) {
+                            /*
                             botui.message.add({
                                 type: 'embed',
-                                content: `http://localhost:8080/ipfs/${res.value}`
+                                content: `//pure-ridge-42982.herokuapp.com:8080/ipfs/${res.value}`
                             }).then(init);
-                            //socket.emit('retrieveImage', res.value);
+                            */
+
+                            socket.emit('retrieveImage', res.value);
+                            socket.on('image', function (retImage){
+                                downloadFile(res.value, retImage)
+                            })
+
                         })
                     });
                 }
@@ -113,28 +119,37 @@ let callUIbutton = (data) => {
     })
 };
 
-let confirmFile = (hash) => {
-    botui.message.add({
-        content: 'Its that your file?',
-        delay: 1500,
-    }).then(function () {
-        botui.action.button({
-            delay: 1000,
-            action: [{
-                icon: 'check',
-                text: 'YES',
-                value: 'confirm'
-            }, {
-                icon: 'pencil',
-                text: 'NO',
-                value: 'edit'
-            }]
-        }).then(function (res) {
-            if(res.value === 'confirm') {
-                socket.emit('retrieveImage', hash.value);
-            }
-        }).then(init)
-    })
+let downloadFile = (downloadHash, returned) => {
+        if(returned){
+            botui.action.button({
+                delay: 500,
+                addMessage: false,
+                action: [{
+                    text: 'Download',
+                    value: 'exist'
+                }]
+            }).then(function (res) {
+                if(res.value === 'exist'){
+                    window.open(`/download/${downloadHash}`);
+                }
+            }).then(function(){
+                botui.message.add({
+                    content: 'Download Iniciated',
+                    delay: 1500,
+                }).then(function(){
+                socket.emit('removeFile', downloadHash);
+                socket.on('imageRemoved', function (d) {
+                    if(d){
+                        init();
+                    }
+                });
+            });
+        })} else {
+            botui.message.add({
+                content: 'Image not found',
+                delay: 1500,
+            }).then(init);
+        }
 };
 
 let end = (index,hash) => {
@@ -197,11 +212,10 @@ let retrieveFromList = (elem) =>{
     return botui.message.add({
         content: 'Retrieving from list : ' + hash + '.',
     }).then(function () {
-        botui.message.add({
-            type: 'embed',
-            content: `http://localhost:8080/ipfs/${hash}`
-        }).then(init);
-        //socket.emit('retrieveImage', res.value);
+        socket.emit('retrieveImage', hash);
+        socket.on('image', function (retImage){
+            downloadFile(hash, retImage)
+        })
     });
 };
 

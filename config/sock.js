@@ -1,40 +1,16 @@
-let app = require('express')();
+// let app = require('express')();
 
 // let swarm = require('./etherumSwarmNode');
 let api = require('./api');
 let ipfs = require('./handlefiles');
 let funct = require('./function');
-
-let http= require('http');
-let https = require('https');
-let fs = require('fs');
-
-let options = {
-    key: fs.readFileSync('./config/certs/server/myserver.key'),
-    cert: fs.readFileSync('./config/certs/server/pure-ridge-42982_herokuapp_com.crt'),
-    requestCert: false,
-    rejectUnauthorized: false
-};
+let io;
 
 
-// let server = https.createServer(options, app);
- let server = require('http').Server(app);
+let fromClient = function(server) {
 
-let io = require('socket.io')(server);
-io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
+    io = require('socket.io')(server);
 
-let conn = function() {
-    server.listen(5000, function(){
-        console.log('listening on *:5000');
-    });
-
-    app.get('/', function (req, res) {
-        res.set('Content-Type', 'text/xml; charset=utf-8');
-        res.sendfile(__dirname + '/index.html');
-    });
-};
-
-let fromClient = function() {
     io.on('connection', function (socket) {
         socket.on('fromClient', function (data) {
             api.getRes(data.client).then(function(res){
@@ -71,5 +47,14 @@ let fromClient = function() {
                 });
         })
     });
+    io.on('connection', function (socket) {
+        socket.on('removeFile', function (hash) {
+            console.log('on removeFile');
+            ipfs.ipfsRemove(hash,(d)=>{
+                socket.emit('imageRemoved', d);
+                console.log(d);
+            });
+        })
+    });
 };
-module.exports = {conn,fromClient};
+module.exports = {fromClient};

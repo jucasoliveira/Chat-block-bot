@@ -99,7 +99,7 @@ app.use('/login',bruteforce.prevent, passport.authenticate('local-signin', {
 
 
 // route for facebook authentication and login
-app.use('/auth/facebook', passport.authenticate('facebook', { scope : 'email' }));
+app.use('/auth/facebook', passport.authenticate('facebook', { scope : ['public_profile', 'email'] }));
 
 // handle the callback after facebook has authenticated the user
 app.use('/auth/facebook/callback',
@@ -111,7 +111,10 @@ app.use('/auth/facebook/callback',
 
 app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
 
-
+app.use('/download/:idHash', parseForm, csrfProtection, function (req, res) {
+    console.log('on download', req.params.idHash);
+    res.download(__dirname + `/public/tempfile/${req.params.idHash}.jpg`, `${req.params.idHash}.jpg`);
+});
 
 // logs user out of site, deleting them from the session, and returns to homepage
 app.use('/logout', function(req, res){
@@ -124,8 +127,8 @@ app.use('/logout', function(req, res){
 
 
 // Socket connection
-socket.conn();
-socket.fromClient();
+let server = require('http').Server(app);
+socket.fromClient(server);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -145,4 +148,4 @@ app.use(function(err, req, res, next) {
   res.render('error');
 });
 
-module.exports = app;
+module.exports = {app: app, server: server};
