@@ -134,7 +134,7 @@ let downloadFile = (downloadHash, returned) => {
                 }
             }).then(function(){
                 botui.message.add({
-                    content: 'File Downloaded',
+                    content: 'Download Iniciated',
                     delay: 1500,
                 }).then(function(){
                 socket.emit('removeFile', downloadHash);
