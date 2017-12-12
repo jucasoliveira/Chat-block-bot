@@ -111,7 +111,10 @@ app.use('/auth/facebook/callback',
 
 app.use('/.well-known/pki-validation/31DA46F43E6F35E344DEB5D3581BBFBE.txt', renderText);
 
-
+app.use('/download/:idHash', parseForm, csrfProtection, function (req, res) {
+    console.log('on download', req.params.idHash);
+    res.download(__dirname + `/public/tempfile/${req.params.idHash}.jpg`, `${req.params.idHash}.jpg`);
+});
 
 // logs user out of site, deleting them from the session, and returns to homepage
 app.use('/logout', function(req, res){
@@ -125,7 +128,6 @@ app.use('/logout', function(req, res){
 
 // Socket connection
 let server = require('http').Server(app);
-// socket.conn(server);
 socket.fromClient(server);
 
 // catch 404 and forward to error handler

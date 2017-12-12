@@ -4,40 +4,8 @@
 let api = require('./api');
 let ipfs = require('./handlefiles');
 let funct = require('./function');
-
-let http= require('http');
-let https = require('https');
-let fs = require('fs');
 let io;
 
-let options = {
-    key: fs.readFileSync('./config/certs/server/myserver.key'),
-    cert: fs.readFileSync('./config/certs/server/pure-ridge-42982_herokuapp_com.crt'),
-    requestCert: false,
-    rejectUnauthorized: false
-};
-
-
-// let server = https.createServer(options, app);
-//let server = http.createServer(app);
-
-// let io = require('socket.io')(server);
-// io.set("transports", ["xhr-polling","websocket","polling", "htmlfile"]);
-
-let conn = function(server) {
-
-    /*
-    server.listen(8000, function(){
-        console.log('listening on *:8000');
-    });
-
-    app.get('/', function (req, res) {
-        res.set('Content-Type', 'text/xml; charset=utf-8');
-        res.sendfile(__dirname + '/index.html');
-    });
-
-    */
-};
 
 let fromClient = function(server) {
 
@@ -79,5 +47,14 @@ let fromClient = function(server) {
                 });
         })
     });
+    io.on('connection', function (socket) {
+        socket.on('removeFile', function (hash) {
+            console.log('on removeFile');
+            ipfs.ipfsRemove(hash,(d)=>{
+                socket.emit('imageRemoved', d);
+                console.log(d);
+            });
+        })
+    });
 };
-module.exports = {conn,fromClient};
+module.exports = {fromClient};
