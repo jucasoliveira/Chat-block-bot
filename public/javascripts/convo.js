@@ -1,5 +1,5 @@
 let botui = new BotUI('api-bot');
-let socket = io('//pure-ridge-42982.herokuapp.com');
+let socket = io('//chatbot-nci.herokuapp.com');
 
 // read the BotUI docs : https://docs.botui.org/
 let sessID;
