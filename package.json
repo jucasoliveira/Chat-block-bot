@@ -22,7 +22,7 @@
     "express-brute": "^1.0.1",
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
-    "hbs": "~4.0.1",
+    "hbs": "~4.1.1",
     "helmet": "^3.9.0",
     "http": "0.0.0",
     "ipfs-js": "0.0.11",
