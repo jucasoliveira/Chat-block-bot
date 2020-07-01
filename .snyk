@@ -1,5 +1,5 @@
 # Snyk (https://snyk.io) policy file, patches or ignores known vulnerabilities.
-version: v1.13.3
+version: v1.16.0
 ignore: {}
 # patches apply the minimum changes required to fix a vulnerability
 patch:
@@ -610,3 +610,6 @@ patch:
   'npm:stringstream:20180511':
     - web3 > web3-bzz > swarm-js > eth-lib > servify > request > stringstream:
         patched: '2018-12-13T11:48:17.845Z'
+  SNYK-JS-LODASH-567746:
+    - hbs > handlebars > async > lodash:
+        patched: '2020-07-01T13:57:00.960Z'
