@@ -22,11 +22,11 @@
     "express-brute": "^1.0.1",
     "express-session": "^1.15.6",
     "express-sessions": "^1.0.6",
-    "hbs": "~4.0.1",
-    "helmet": "^3.9.0",
+    "hbs": "~4.0.5",
+    "helmet": "^3.21.1",
     "http": "0.0.0",
     "ipfs-js": "0.0.11",
-    "jasmine-node": "^2.0.1",
+    "jasmine-node": "^1.14.6",
     "method-override": "^2.3.10",
     "mongodb": "^3.1.13",
     "monk": "^7.0.0",
@@ -39,7 +39,7 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.4",
     "url": "^0.11.0",
-    "web3": "^1.0.0-beta.24",
+    "web3": "^1.2.0",
     "snyk": "^1.88.0"
   },
   "snyk": true
