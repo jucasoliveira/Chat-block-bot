@@ -28,7 +28,7 @@
     "ipfs-js": "0.0.11",
     "jasmine-node": "^1.14.6",
     "method-override": "^2.3.10",
-    "mongodb": "^3.1.13",
+    "mongodb": "^3.3.0",
     "monk": "^7.0.0",
     "morgan": "~1.9.0",
     "passport": "^0.2.0",
@@ -39,7 +39,7 @@
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.4",
     "url": "^0.11.0",
-    "web3": "^1.2.0",
+    "web3": "^4.0.1",
     "snyk": "^1.88.0"
   },
   "snyk": true
